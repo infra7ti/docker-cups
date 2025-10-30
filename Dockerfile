@@ -19,9 +19,9 @@ FROM scratch
 COPY --from=updated-base / /
 
 # Environment variables
-ENV TZ "Etc/UTC"
-ENV CUPSADMIN "admin"
-ENV CUPSPASSWORD "__cUPsPassw0rd__"
+ENV TZ="Etc/UTC"
+ENV CUPSADMIN="admin"
+ENV CUPSPASSWORD="__cUPsPassw0rd__"
 
 LABEL org.opencontainers.image.source="https://github.com/infra7ti/docker-cups"
 LABEL org.opencontainers.image.description="Common Unix Print Server (CUPS)"
