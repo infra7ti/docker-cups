@@ -1,25 +1,9 @@
 #!/bin/bash
-# The MIT License (MIT)
+# @file: entrypoint
+# @brief: Entrypoint for the container
 #
-# Copyright (c) 2007-2024 Infra7 Serviços em TI.
-#
-# Permission is hereby granted, free  of  charge,  to  any  person  obtaining  a
-# copy of this software and associated  documentation  files  (the  "Software"),
-# to deal in the Software  without  restriction,  including  without  limitation
-# the rights to use,  copy,  modify,  merge,  publish,  distribute,  sublicense,
-# and/or sell copies of  the  Software,  and  to  permit  persons  to  whom  the
-# Software  is  furnished  to  do  so,  subject  to  the  following  conditions:
-#
-# The above copyright notice and this permission notice  shall  be  included  in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS  IS",  WITHOUT  WARRANTY  OF  ANY  KIND,  EXPRESS
-# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE  WARRANTIES  OF  MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT  SHALL  THE
-# AUTHORS OR COPYRIGHT HOLDERS  BE  LIABLE  FOR  ANY  CLAIM,  DAMAGES  OR  OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING  FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN  THE
-# SOFTWARE.
+# SPDX-FileCopyrightText: 2007-2026 Infra7 Serviços em TI
+# SPDX-License-Identifier: GPL-2.0-or-later
 
 export LC_ALL=C
 export PATH=/usr/local/sbin:/usr/local/bin:${PATH}
@@ -57,10 +41,10 @@ _run_scripts() {
                       __info $(printf $"Launching shell-script: '%s'\n" "${_script}")
                       "${_script}"
                   else
-                      __warn $(printf $"Ignoring non-executable script:' %s'\n" "${_script}")
+                      __warning $(printf $"Ignoring non-executable script:' %s'\n" "${_script}")
                   fi
               else
-	          __warn $(printf $"Ignoring non shell-script: '%s'\n" "${_script}")
+	          __warning $(printf $"Ignoring non shell-script: '%s'\n" "${_script}")
               fi
           done
     fi
@@ -86,7 +70,7 @@ _run() {
 
 # Default variables values
 : ${CUPSADMIN:="admin"}
-: ${CUPSPASSWD:="__cUPsPassw0rd__"}
+: ${CUPSPASSWORD:="__cUPsPassw0rd__"}
 : ${CUPSADMINFILE:="/run/secrets/cups_admin"}
 : ${CUPSPASSWORDFILE:="/run/secrets/cups_password"}
 : ${CUPSERRORLOG:="/dev/stderr"}
@@ -109,6 +93,28 @@ fi
 
 # Set the error log
 sed -i "s|^ErrorLog.*|ErrorLog ${CUPSERRORLOG}|g" /etc/cups/cups-files.conf
+
+# Default services toggle
+: ${START_DBUS_DAEMON:="OFF"}
+: ${START_AVAHI_DAEMON:="OFF"}
+
+# Start D-Bus if requested
+if [ "$(echo "${START_DBUS_DAEMON}" | tr '[:lower:]' '[:upper:]')" = "ON" ]; then
+    if [ -x /usr/bin/dbus-daemon ]; then
+        mkdir -p /run/dbus /var/run/dbus
+        dbus-daemon --system --fork
+        __info "D-Bus daemon started successfully.\n"
+    fi
+fi
+
+# Start Avahi if requested
+if [ "$(echo "${START_AVAHI_DAEMON}" | tr '[:lower:]' '[:upper:]')" = "ON" ]; then
+    if [ -x /usr/sbin/avahi-daemon ]; then
+        mkdir -p /run/avahi-daemon /var/run/avahi-daemon
+        avahi-daemon -D
+        __info "Avahi daemon started successfully.\n"
+    fi
+fi
 
 # The default CMD for this entrypoint is bash
 CMD=${@:-bash}

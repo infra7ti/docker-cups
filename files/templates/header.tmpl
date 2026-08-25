@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
-    <link rel="shortcut icon" href="/apple-touch-icon.png" type="image/png">
+    <link rel="shortcut icon" href="/favicon.svg" type="image/svg" />
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     {refresh_page?<meta http-equiv="refresh" content="{refresh_page}">:}
@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <style>html{display:none;}</style>
     <link rel="stylesheet" href="/cups.css" />
-    <script type="text/javascript">
+    <script type="text/javascript"><!--
       /* Only display document if we are not in a frame... */
       if (self == top) {
         document.documentElement.style.display = 'block';
@@ -25,19 +25,22 @@
               document.getElementById('body').innerHTML = 'This page uses cookies to prevent common cross-site attacks. Please enable cookies in your browser.';
         }
       }
-      </script>
-    <title>{title} - CUPS 2.2.10</title>
+      --></script>
+    <title>{title} - CUPS {cups_version}</title>
   </head>
   <body onload="check_cookies();">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-      <a class="navbar-brand" href="/">CUPS Home</a>
+      <a class="navbar-brand" href="/">CUPS</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto text-center">
           <li class="nav-item">
-            <a {SECTION=admin?class="nav-link active" :}href="/admin" class="nav-link">Admin</a>
+            <a {SECTION=admin?class="nav-link active" :}href="/" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a {SECTION=admin?class="nav-link active" :}href="/admin" class="nav-link">Administration</a>
           </li>
           <li class="nav-item">
             <a {SECTION=classes?class="nav-link active" :}href="/classes/" class="nav-link">Classes</a>
