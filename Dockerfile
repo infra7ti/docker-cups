@@ -35,6 +35,7 @@ SHELL ["/bin/bash", "-c"]
 RUN set -eu; \
     source /tmp/build.env; \
     apt-get update; \
+    apt-mark showmanual > /tmp/installed-manual.list; \
     \
     # install packages \
     echo "${PACKAGES}" | xargs \
@@ -42,6 +43,8 @@ RUN set -eu; \
             --no-install-recommends \
             --no-install-suggests; \
     \
+    # Compile and install foo2zjs (debian package is buggy) \
+    [ "${VARIANT}" == "full" ] && __compile_foo2zjs; \
     # Override CUPS templates to use bootstrap Web UI \
     __override_templates; \
     # Baked-in config file changes \
@@ -49,11 +52,13 @@ RUN set -eu; \
     # Backup cups config in case used does not add their own \
     __backup_cups; \
     # Cleanup build dependencies and temporary files \
+    comm -13 /tmp/installed-manual.list <(apt-mark showmanual) \
+        | xargs -r apt-get purge -y --auto-remove; \
     apt-get autoremove -y \
         --purge \
         -o APT::AutoRemove::RecommendsImportant=false; \
     apt-get -y clean; \
-    rm -rf /tmp/build.env /tmp/files
+    rm -rf /tmp/build.env /tmp/files /tmp/installed-manual.list
 
 EXPOSE 631
 EXPOSE 5353/udp
