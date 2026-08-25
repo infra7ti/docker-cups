@@ -22,6 +22,7 @@ RUN set -eu; \
 
 
 FROM scratch
+ARG VARIANT=${VARIANT:-full}
 COPY --from=updated-base / /
 
 # Environment variables
@@ -41,8 +42,6 @@ SHELL ["/bin/bash", "-c"]
 RUN set -eu; \
     source /tmp/build.env; \
     apt-get update; \
-    apt-mark showmanual > /tmp/installed-manual.list; \
-    \
     # install packages \
     echo "${PACKAGES}" | xargs \
         apt-get install -y \
@@ -58,8 +57,8 @@ RUN set -eu; \
     # Backup cups config in case used does not add their own \
     __backup_cups; \
     # Cleanup build dependencies and temporary files \
-    comm -13 /tmp/installed-manual.list <(apt-mark showmanual) \
-        | xargs -r apt-get purge -y --auto-remove; \
+    echo "${PURGE_PACKAGES}" | xargs -r \
+        apt-get purge -y --auto-remove; \
     apt-get autoremove -y \
         --purge \
         -o APT::AutoRemove::RecommendsImportant=false; \
