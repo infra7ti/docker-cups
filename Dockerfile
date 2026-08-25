@@ -7,7 +7,7 @@
 FROM debian:stable-slim AS updated-base
 
 ARG VARIANT=${VARIANT:-full}
-COPY ${VARIANT}/build.env /tmp/
+COPY variants/${VARIANT}/build.env /tmp/
 COPY --chmod=0755 scripts/* /sbin/
 COPY files/ /files/
 
