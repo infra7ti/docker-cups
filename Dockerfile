@@ -4,26 +4,12 @@
 # SPDX-FileCopyrightText: 2024-2026 Infra7 Serviços em TI
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-FROM debian:stable-slim AS updated-base
-
+FROM debian:stable-slim
 ARG VARIANT=${VARIANT:-full}
+
 COPY variants/${VARIANT}/build.env /tmp/
 COPY --chmod=0755 scripts/* /sbin/
-COPY files/ /files/
-
-RUN set -eu; \
-    apt-get update; \
-    apt-get dist-upgrade -y --autoremove; \
-    apt-get autoremove -y \
-        --purge \
-        -o APT::AutoRemove::RecommendsImportant=false; \
-    apt-get -y clean; \
-    rm -rf /var/lib/apt/lists/*
-
-
-FROM scratch
-ARG VARIANT=${VARIANT:-full}
-COPY --from=updated-base / /
+COPY resources/ /files/
 
 # Environment variables
 ENV TZ="Etc/UTC"

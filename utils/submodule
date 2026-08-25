@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+##
+# @file submodule
+# @brief Lightweight executable CLI entry point forwarding arguments to the core module.
+#
+# SPDX-FileCopyrightText: 2026 INFRA7 Serviços em TI
+# SPDX-License-Identifier: GPL-2.0-or-later
+##
+
+import sys
+from pathlib import Path
+
+# Insert local context to path to guarantee clean resolution of sibling imports
+sys.path.append(str(Path(__file__).parent / "lib"))
+
+try:
+    import submodule
+except ImportError as e:
+    print(f"  Error: Failed to initialize execution wrapper context: {e}", file=sys.stderr)
+    sys.exit(1)
+
+if __name__ == "__main__":
+    submodule.main()

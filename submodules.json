@@ -1,0 +1,18 @@
+{
+  "submodules": [
+    {
+      "name": "cups-doc_root",
+      "repository": "https://github.com/ekaaty/cups-tailwind.git",
+      "ref": "main",
+      "folder": "doc-root",
+      "path": "resources/doc-root"
+    },
+    {
+      "name": "cups-templates",
+      "repository": "https://github.com/ekaaty/cups-tailwind.git",
+      "ref": "main",
+      "folder": "templates",
+      "path": "resources/templates"
+    }
+  ]
+}
