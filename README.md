@@ -114,6 +114,5 @@ If your server has avahi-daemon/mdns running you can use the hostname, ie: http:
 If you are running this on your PC, i.e. not on a headless server, you should be able to log in on http://localhost:631
 
 ## Thanks
-This project starts as a fork of the work done by:
- **RagingTiger**: [https://github.com/RagingTiger/cups-airprint](RagingTiger/cups-airprint)
- **Anujdatar**: [https://github.com/anujdatar/cups-docker](anujdatar/cups-docker)
+This project originated as a fork of earlier work by:
+**Anujdatar**: [https://github.com/anujdatar/cups-docker](anujdatar/cups-docker)

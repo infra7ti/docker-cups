@@ -1,3 +1,9 @@
+# @file Dockerfile
+# @brief Container image definition for Infra7 CUPS (proxy and full variants)
+#
+# SPDX-FileCopyrightText: 2024-2026 Infra7 Serviços em TI
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 FROM debian:stable-slim AS updated-base
 
 ARG VARIANT=${VARIANT:-full}
@@ -27,7 +33,7 @@ LABEL org.opencontainers.image.source="https://github.com/infra7ti/docker-cups"
 LABEL org.opencontainers.image.description="Common Unix Print Server (CUPS)"
 LABEL org.opencontainers.image.author="Infra7 Serviços em TI"
 LABEL org.opencontainers.image.url="https://github.com/infra7ti/docker-cups/blob/main/README.md"
-LABEL org.opencontainers.image.licenses=MIT
+LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
 
 # Needed for source shell functions into this Dockerfile
 SHELL ["/bin/bash", "-c"]
